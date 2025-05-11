@@ -52,6 +52,10 @@ To run the notebooks in this repository, you will need the following packages:
 * `matplotlib`
 * `scikit-learn`
 * `seaborn`
+* `regex`
+* `keras`
+* `tensorflow`
+* `LughaatNLP`
 * `torch`
 * `os`
 * `json`
@@ -60,10 +64,6 @@ To run the notebooks in this repository, you will need the following packages:
 * `zipfile`
 * `requests`
 * `BeautifulSoup`
-* `tqdm`
-* `segmentation-models-pytorch`
-* `grad-cam`
-* `torchsummary`
 
 You can install these packages using pip:
 
@@ -72,31 +72,11 @@ pip install numpy
 ```
 
 ```bash
+pip install pandas
+```
+
+```bash
 pip install matplotlib
-```
-
-```bash
-pip install seaborn
-```
-
-```bash
-pip install opencv-python
-```
-
-```bash
-pip install pillow
-```
-
-```bash
-pip install torch torchvision
-```
-
-```bash
-pip install timm
-```
-
-```bash
-pip install albumentations
 ```
 
 ```bash
@@ -104,22 +84,42 @@ pip install scikit-learn
 ```
 
 ```bash
-pip install tqdm
+pip install seaborn
 ```
 
 ```bash
-pip install segmentation-models-pytorch
+pip install regex
 ```
 
 ```bash
-pip install grad-cam
+pip install keras
 ```
 
 ```bash
-pip install torchsummary
+pip install tensorflow
 ```
 
-After installing the required libraries, simply run the **"Imports"** cell in each notebook to begin.
+```bash
+pip install LughaatNLP
+```
+
+```bash
+pip install torch
+```
+
+```bash
+pip install requests
+```
+
+The os, json, time, random and zipfile libraries are part of Python's standard library and do not need to be installed via pip. <br>
+
+To install the BeautifulSoup library, simply run the first code block in the scraping.ipynb file. 
+
+```bash
+!pip install BeautifulSoup4
+```
+
+After installing the required libraries, run the **"Imports"** cell in each notebook to begin.
 
 Useful Links for installing Jupyter Notebook:
 - https://youtube.com/watch?v=K0B2P1Zpdqs  (MacOS)
@@ -140,39 +140,51 @@ Also, you will need a GPU to run the notebooks. It is recommended to have a Goog
 
 ## Project Overview
 
-Our project was executed over a period of approximately 1.5 months and consisted of the following five main phases:
+Our project was executed over a period of approximately one month. The goal was to classify Urdu news articles into five distinct categories using supervised machine learning techniques. We implemented and evaluated three classifiers: **Multinomial Naive Bayes**, **Multiclass Logistic Regression**, and a **Neural Network**, analyzing their performance on real-world scraped news data.
 
-#### 1. **Dataset Collection**
 
-In this phase, we conducted extensive research to identify suitable datasets for our project. We curated a large collection of over 10,000 chest X-ray images from three different Kaggle datasets for classification tasks. Additionally, we sourced a dataset of 704 chest X-ray images with corresponding masks to train and evaluate our image segmentation models.
+### 1. **Dataset Collection**
 
-#### 2. **Baseline Model**
+We scraped 2,750 Urdu news articles from major Pakistani news websites including *Geo Urdu*, *Jang*, *Dunya News*, *Express News*, and *Samaa News*. These articles were categorized into five classes: **Entertainment**, **Business**, **Sports**, **Science-Technology**, and **International**. The scraping code is available in `scraping.ipynb`, and the collected articles were saved in `raw_data.csv`.
 
-As our baseline, we implemented a **pretrained UNet++** model for lung segmentation. This model achieved a Dice Coefficient of 96%, providing a strong foundation for downstream classification tasks.
+### 2. **Data Preprocessing**
 
-#### 3. **Improved Release**
+The raw data was cleaned and transformed using custom techniques and the `LughaatNLP` library. This included removing duplicates, handling missing data, correcting spelling errors, and applying normalization, lemmatization, and stemming. Stopwords were removed and the text was tokenized to prepare it for modeling. The final preprocessed dataset was saved as `scraped_data.csv`, and all preprocessing steps are documented in `preprocessing.ipynb`.
 
-In this phase, we developed a **SEResNet50** model — a Squeeze-and-Excitation ResNet architecture — for TB classification. The model demonstrated excellent performance, achieving 99% classification accuracy, along with strong results across all evaluation metrics.
+### 3. **Model 1: Multinomial Naive Bayes**
 
-#### 4. **Final Release**
+We began with a **Multinomial Naive Bayes** classifier using the Bag-of-Words representation. The model achieved an accuracy of **96.55%** and a macro F1-score of **0.97**, demonstrating strong performance across all five categories. Implementation details are in `NaiveBayes.ipynb`.
 
-We introduced a two-stage pipeline, where the UNet++ model first segmented the lungs, followed by classification using the SEResNet50 model. This integrated approach achieved an impressive 99% accuracy. Additionally, we experimented with a Swin Transformer, exploring transformer-based architectures for medical image classification. The Swin Transformer yielded strong performance, achieving a test accuracy of 96.28% and a test loss of 0.2156. Overall, the Swin Transformer achieved a macro average F1-score of 0.9627, indicating its effectiveness as a transformer-based alternative for TB classification.
+### 4. **Model 2: Logistic Regression**
 
-#### 5. **Research Paper**
+Our second model used **Multiclass Logistic Regression** with a Softmax activation function. This model achieved **95.27%** accuracy and a macro F1-score of **0.95**. It demonstrated robust results, particularly for the **Business** and **Sports** categories. The code for this model is available in `LogisticRegression.ipynb`.
 
-We concluded the project by writing a comprehensive **research paper** detailing our motivations, dataset preparation, methodology, model architectures, results, and analysis. This document serves as a complete overview of our approach and findings.
+### 5. **Model 3: Neural Network**
+
+Finally, we implemented a simple **feedforward neural network** using Pytorch. This model used tokenized sequences as input and included techniques like batch normalization and dropout. It achieved the **highest accuracy of 97.45%** and a macro F1-score of **0.97**. The implementation is in `NeuralNetwork.ipynb`.
+
+### 6. **Report**
+
+Our findings, methodologies, and evaluations are comprehensively summarized in `Report.pdf`. This document outlines our motivations, preprocessing strategies, model architectures, and performance insights. It also discusses limitations such as single-label classification and the lack of contextual understanding in traditional models.
 
 
 ## Data
 
-Our database consisted of the following four datasets. All of them were sourced from kaggle and are publicly available at the following links:
+The dataset for this project was curated by scraping news articles from five major Urdu news websites in Pakistan: <br>
+* **Geo Urdu**
+* **Jang**
+* **Dunya News**
+* **Express News**
+* **Samaa News**. <br>
 
-- Dataset 2: https://www.kaggle.com/datasets/tawsifurrahman/tuberculosis-tb-chest-xray-dataset
-- Dataset 3: https://www.kaggle.com/datasets/usmanshams/tbx-11
-- Dataset 4: https://www.kaggle.com/datasets/pritpal2873/chest-x-ray-dataset-4-categories
+A total of **2,750 articles** were collected using automated scraping techniques, documented in `scraping.ipynb`. These articles were retrieved directly from the websites' HTML content, extracting the article title, body text, and category labels where available. The raw data was stored in `raw_data.csv`, containing multiple fields including article text, publication date, source URL, and category. The articles were labeled into one of five predefined categories: <br>
+* **Entertainment**
+* **Business**
+* **Sports**
+* **Science-Technology**
+* **International**.
 
-- Image Segmentation Dataset: https://www.kaggle.com/datasets/iamtapendu/chest-x-ray-lungs-segmentation
-
+After collection, the data underwent a comprehensive cleaning and preprocessing phase to remove noise such as HTML tags, duplicates, and non-Urdu content. Additionally, tokenization, stopword removal, normalization, stemming, and lemmatization were applied using the `LughaatNLP` library, resulting in a final cleaned dataset saved in `scraped_data.csv`. This dataset forms the foundation for training and evaluating the three supervised learning models implemented in the project.
 
 
 ## Training and Visualization
