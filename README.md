@@ -194,15 +194,14 @@ The entire training process alongside the relevant evaluations and visualization
 
 ## Screenshots
 
-<h4> 1. This image shows eight random samples of Chest X-ray images from the Image Segmentation dataset, with their masks ovelaid on top of the grayscale images. The masks are shaded red for better visualization.  </h4>
-<img src="Pic1.png" width="450px"> <br> 
+<h4> 1. This image shows the confusion matrix when the Multinomial Naive Bayes classifier is evaluated on the test dataset.  </h4>
+<img src="pic1.png" width="450px"> <br> 
 
-<h4> 2. This image shows the confusion matrix when the SEResNet50 classifier is evaluated on the test dataset containing raw Chest X-ray images. </h4>
-<img src="Pic2.png" width="450px"> <br> 
+<h4> 2. This image shows the confusion matrix when the Logistic Regression classifier is evaluated on the test dataset. </h4>
+<img src="pic2.png" width="450px"> <br> 
 
-<h3> 3. Swin Transformer </h3>
-<h4> This image shows the confusion matrix when the Swin Transformer model is evaluated on the test dataset. </h4>
-<img src="SwinTransformer_confusion_matrix.png" width="450px">
+<h4> 3. This image shows the confusion matrix when the Neural Network classifier is evaluated on the test dataset. </h4>
+<img src="pic3.png" width="450px">
  <br> 
  
 ## License
